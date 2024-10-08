@@ -1,10 +1,10 @@
 import boto3
 import os
 from uuid import UUID
-from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from botocore.exceptions import ClientError, BotoCoreError
-from .schemas import UserRole, UserSchema
+from .schemas import UserRole
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
