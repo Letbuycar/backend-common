@@ -10,8 +10,9 @@ from .schemas import UserRole
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 class AWS_Common_Cognito:
-    def __init__(self):
-        AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
+    def __init__(self, AWS_REGION_NAME:str = None):
+        if not AWS_REGION_NAME:
+            AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
         self.client = boto3.client("cognito-idp", region_name=AWS_REGION_NAME)
 
     def get_user(self, token: str):
