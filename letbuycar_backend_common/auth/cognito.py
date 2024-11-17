@@ -1,7 +1,7 @@
 import boto3
 import os
 from uuid import UUID
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Header
 from fastapi.security import OAuth2PasswordBearer
 from botocore.exceptions import ClientError, BotoCoreError
 from .schemas import UserRole
@@ -67,7 +67,7 @@ class AWS_Common_Cognito:
     def check_user_role(self, user_id: UUID, role: UserRole) -> bool:
         return self._get_user_role(user_id) == role
         
-    def check_user_role_by_token(self, role: UserRole) -> bool:
+    def check_user_role_by_token(self, role: UserRole, Authorization: str = Header(None)) -> bool:
         def dependency(token: str = Depends(oauth2_scheme)) -> bool:
             if not token:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
@@ -79,6 +79,6 @@ class AWS_Common_Cognito:
             has_access = self.check_user_role(user['sub'], role)
             if not has_access:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
-            return has_access
+            return user
         return dependency
 
