@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 import os
+from .schemas import MessageType
 
 
 class SQSService:
@@ -13,7 +14,7 @@ class SQSService:
         )
         self.sqs_url = AWS_SQS_QUEUE_URL
 
-    def send_message(self, message_body: str, attrs: dict = None) -> dict:
+    def send_message(self, message_body: MessageType, attrs: dict = None) -> dict:
         try:
             response = self.client.send_message(
                 QueueUrl=self.queue_url,
