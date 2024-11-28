@@ -12,7 +12,7 @@ class SQSService:
             "sqs",
             region_name=AWS_REGION_NAME
         )
-        self.sqs_url = AWS_SQS_QUEUE_URL
+        self.queue_url = AWS_SQS_QUEUE_URL
 
     def send_message(self, message_body: MessageType, attrs: dict = None) -> dict:
         try:
