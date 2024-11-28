@@ -5,7 +5,7 @@ from .schemas import MessageType
 
 
 class SQSService:
-    def __init__(self, AWS_REGION_NAME, AWS_SQS_QUEUE_URL):
+    def __init__(self):
         AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
         AWS_SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
         self.client = boto3.client(
