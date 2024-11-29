@@ -19,16 +19,23 @@ class SQSService:
             
             message_attributes = {}
             for key, value in (attrs or {}).items():
-                data_type = "String"
-                if isinstance(value, bool):
-                    data_type = "Boolean"
-                elif isinstance(value, int) or isinstance(value, float):
-                    data_type = "Number"
-                message_attributes[key] = {
-                    "StringValue": str(value),
-                    "DataType": data_type
-                }
+                if isinstance(value, int) or isinstance(value, float):
+                    message_attributes[key] = {
+                        "StringValue": str(value),
+                        "DataType": "Number"
+                    }
 
+                elif isinstance(value, bool):
+                    message_attributes[key] = {
+                        "StringValue": "1" if value else "0",
+                        "DataType": "Number"
+                    }
+                else:
+                    message_attributes[key] = {
+                        "StringValue": str(value),
+                        "DataType": "String"
+                    }
+                
             print('message_attributes', message_attributes)
 
 
