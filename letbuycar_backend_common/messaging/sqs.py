@@ -40,12 +40,13 @@ class SQSService:
         except (BotoCoreError, ClientError) as e:
             raise RuntimeError(f"Ошибка отправки сообщения: {e}")
 
-    def receive_messages(self, max_messages: int = 1, wait_time: int = 10) -> list:
+    def receive_messages(self) -> list:
         try:
             response = self.client.receive_message(
                 QueueUrl=self.queue_url,
-                MaxNumberOfMessages=max_messages,
-                WaitTimeSeconds=wait_time,
+                MaxNumberOfMessages=1,
+                WaitTimeSeconds=10,
+                MessageAttributeNames=["All"],
             )
             return response.get("Messages", [])
         except (BotoCoreError, ClientError) as e:
