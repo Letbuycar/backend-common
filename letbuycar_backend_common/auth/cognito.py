@@ -71,6 +71,11 @@ class AWS_Common_Cognito:
         def dependency(token: str = Depends(oauth2_scheme)) -> bool:
             if not token:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
+            if role == UserRole.ROBOT:
+                has_access = self._check_robot_token(token)
+                if not has_access:
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
+                return True
             user = self.get_user(token)
             if not user:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
@@ -82,3 +87,5 @@ class AWS_Common_Cognito:
             return user
         return dependency
 
+    def _check_robot_token(self, token: str) -> bool:
+        return token == os.getenv('ROBOT_TOKEN')

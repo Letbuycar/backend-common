@@ -11,6 +11,7 @@ class UserRole(str, Enum):
     LOGISTICIAN = 'Logistician'
     BROKER = 'Broker'
     CUSTOMER = 'Customer'
+    ROBOT = 'Robot'
 
 
 class UserSchema(BaseModel):
