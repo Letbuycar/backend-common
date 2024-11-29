@@ -20,14 +20,16 @@ class SQSService:
             message_attributes = {}
             for key, value in (attrs or {}).items():
                 data_type = "String"
-                if isinstance(value, int):
-                    data_type = "Number"
-                elif isinstance(value, bool):
+                if isinstance(value, bool):
                     data_type = "Boolean"
+                elif isinstance(value, int) or isinstance(value, float):
+                    data_type = "Number"
                 message_attributes[key] = {
                     "StringValue": str(value),
                     "DataType": data_type
                 }
+
+            print('message_attributes', message_attributes)
 
 
             response = self.client.send_message(
