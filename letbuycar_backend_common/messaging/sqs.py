@@ -16,11 +16,25 @@ class SQSService:
 
     def send_message(self, message_body: MessageType, attrs: dict = None) -> dict:
         try:
+            
+            message_attributes = {}
+            for key, value in (attrs or {}).items():
+                data_type = "String"
+                if isinstance(value, int):
+                    data_type = "Number"
+                elif isinstance(value, bool):
+                    data_type = "Boolean"
+                message_attributes[key] = {
+                    "StringValue": str(value),
+                    "DataType": data_type
+                }
+
+
             response = self.client.send_message(
                 QueueUrl=self.queue_url,
                 MessageBody=message_body,
                 DelaySeconds=0,
-                MessageAttributes=attrs
+                MessageAttributes=message_attributes
             )
             return response
         except (BotoCoreError, ClientError) as e:
