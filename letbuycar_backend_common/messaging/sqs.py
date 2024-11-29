@@ -39,7 +39,6 @@ class SQSService:
             return response.get("Messages", [])
         except (BotoCoreError, ClientError) as e:
             raise RuntimeError(f"Ошибка получения сообщений: {e}")
-        
 
 
     def receive_one_message(self) -> dict:
@@ -47,9 +46,12 @@ class SQSService:
 
             message = self.receive_messages(1)
             message = message[0]
+            receipt_handle = message["ReceiptHandle"]
+
             return {
                 "message_type": message["Body"],
-                "message_attrs": self._attrs_to_dict(message["MessageAttributes"])
+                "message_attrs": self._attrs_to_dict(message["MessageAttributes"]),
+                "receipt_handle": receipt_handle
             }
         except (BotoCoreError, ClientError) as e:
             raise RuntimeError(f"Ошибка получения сообщений: {e}")
