@@ -44,8 +44,12 @@ class SQSService:
     def receive_one_message(self) -> dict:
         try:
 
-            message = self.receive_messages(1)
-            message = message[0]
+            messages = self.receive_messages(1)
+
+            if not message:
+                return None
+            
+            message = messages[0]
             receipt_handle = message["ReceiptHandle"]
 
             return {
