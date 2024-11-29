@@ -26,7 +26,7 @@ class SQSService:
             )
             return response
         except (BotoCoreError, ClientError) as e:
-            raise RuntimeError(f"Ошибка отправки сообщения: {e}")
+            raise RuntimeError(f"Error with message send: {e}")
 
     def receive_messages(self, messages_number) -> list:
         try:
@@ -38,7 +38,7 @@ class SQSService:
             )
             return response.get("Messages", [])
         except (BotoCoreError, ClientError) as e:
-            raise RuntimeError(f"Ошибка получения сообщений: {e}")
+            raise RuntimeError(f"Error with message receive: {e}")
 
 
     def receive_one_message(self) -> dict:
@@ -58,7 +58,7 @@ class SQSService:
                 "receipt_handle": receipt_handle
             }
         except (BotoCoreError, ClientError) as e:
-            raise RuntimeError(f"Ошибка получения сообщений: {e}")
+            raise RuntimeError(f"Error with message receive: {e}")
         
 
     def delete_message(self, receipt_handle: str) -> None:
@@ -68,7 +68,7 @@ class SQSService:
                 ReceiptHandle=receipt_handle,
             )
         except (BotoCoreError, ClientError) as e:
-            raise RuntimeError(f"Ошибка удаления сообщения: {e}")
+            raise RuntimeError(f"Error with message delete: {e}")
         
 
     def _attrs_from_dict(self, attrs: dict) -> dict:
