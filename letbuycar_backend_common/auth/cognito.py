@@ -29,6 +29,20 @@ class AWS_Common_Cognito:
         except Exception as e:
             return {"Error": str(e)}
         
+    def get_user_id(self, token: str):
+        try:
+            user_req = self.client.get_user(
+                AccessToken=token
+            )
+            user_id = [attr['Value'] for attr in user_req['UserAttributes'] if attr['Name'] == 'sub'][0]
+            return user_id
+        except ClientError as e:
+            return {"Error": e.response['Error']['Message']}
+        except BotoCoreError as e:
+            return {"Error": str(e)}
+        except Exception as e:
+            return {"Error": str(e)}
+        
     def get_user_full_info(self, token: str):
         try:
             user_req = self.get_user(token)
