@@ -113,9 +113,8 @@ class AWS_Common_Cognito:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
             if UserRole.ROBOT in roles:
                 has_access = self._check_robot_token(token)
-                if not has_access:
-                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
-                return True
+                if has_access:
+                    return True
             user = self.get_user(token)
             if not user:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
