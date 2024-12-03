@@ -78,7 +78,7 @@ class AWS_Common_Cognito:
         except Exception as e:
             return {"Error": str(e)}
         
-    def check_user_role(self, user_id: UUID, role: UserRole) -> bool:
+    def _check_user_role(self, user_id: UUID, role: UserRole) -> bool:
         return self._get_user_role(user_id) == role
         
     def check_user_role_by_token(self, role: UserRole, Authorization: str = Header(None)) -> bool:
@@ -95,7 +95,7 @@ class AWS_Common_Cognito:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
             if 'Error' in user:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=user['Error'])
-            has_access = self.check_user_role(user['sub'], role)
+            has_access = self._check_user_role(user['sub'], role)
             if not has_access:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
             return user
@@ -104,7 +104,7 @@ class AWS_Common_Cognito:
     def _check_robot_token(self, token: str) -> bool:
         return token == os.getenv('ROBOT_TOKEN')
         
-    def check_user_roles(self, user_id: UUID, roles: list[UserRole]) -> bool:
+    def _check_user_roles(self, user_id: UUID, roles: list[UserRole]) -> bool:
         return self._get_user_role(user_id) in roles
         
     def check_user_roles_by_token(self, roles: UserRole, Authorization: str = Header(None)) -> bool:
@@ -120,7 +120,7 @@ class AWS_Common_Cognito:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing token")
             if 'Error' in user:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=user['Error'])
-            has_access = self.check_user_role(user['sub'], roles)
+            has_access = self._check_user_roles(user['sub'], roles)
             if not has_access:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
             return user
