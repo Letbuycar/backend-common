@@ -1,3 +1,4 @@
+from enum import Enum
 
 class DOCS_TYPE(str, Enum):
     INVOICE = 'invoice'
