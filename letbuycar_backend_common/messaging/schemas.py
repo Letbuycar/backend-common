@@ -4,4 +4,5 @@ from enum import Enum
 
 
 class MessageType(str, Enum):
-    IS_CARGO_IMAGES = 'IS_CARGO_IMAGES'
+    NOTIFICATION = 'notification'
+    CARGO = 'cargo'

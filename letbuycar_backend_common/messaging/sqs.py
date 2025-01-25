@@ -2,7 +2,7 @@ import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 import os
 from .schemas import MessageType
-
+    
 
 class SQSService:
     def __init__(self):
@@ -46,7 +46,7 @@ class SQSService:
 
             messages = self.receive_messages(1)
 
-            if not message:
+            if not messages:
                 return None
             
             message = messages[0]
