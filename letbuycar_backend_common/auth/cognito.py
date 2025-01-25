@@ -29,6 +29,23 @@ class AWS_Common_Cognito:
         except Exception as e:
             return {"Error": str(e)}
         
+    def get_user_by_id(self, user_id: UUID):
+        try:
+            user_req = self.client.admin_get_user(
+                UserPoolId=os.getenv('AWS_COGNITO_USER_POOL_ID'),
+                Username=user_id
+            )
+            user_info = {attr['Name']: attr['Value'] for attr in user_req['UserAttributes']}
+
+            user_info['role'] = self._get_user_role(user_id)
+            return user_info
+        except ClientError as e:
+            return {"Error": e.response['Error']['Message']}
+        except BotoCoreError as e:
+            return {"Error": str(e)}
+        except Exception as e:
+            return {"Error": str(e)}
+        
     def get_user_id(self, token: str):
         try:
             user_req = self.client.get_user(
