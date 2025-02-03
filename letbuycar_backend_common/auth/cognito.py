@@ -125,7 +125,10 @@ class AWS_Common_Cognito:
         return token == os.getenv('ROBOT_TOKEN')
         
     def _check_user_roles(self, user_id: UUID, roles: list[UserRole]) -> bool:
-        return self._get_user_role(user_id) in roles
+        user_role = self._get_user_role(user_id)
+        if user_role == UserRole.ADMIN:
+            return True
+        return user_role in roles
         
     def check_user_roles_by_token(self, roles: UserRole, Authorization: str = Header(None)) -> bool:
         def dependency(token: str = Depends(oauth2_scheme)) -> bool:
