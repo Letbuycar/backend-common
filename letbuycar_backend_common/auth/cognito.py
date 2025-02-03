@@ -96,7 +96,10 @@ class AWS_Common_Cognito:
             return {"Error": str(e)}
         
     def _check_user_role(self, user_id: UUID, role: UserRole) -> bool:
-        return self._get_user_role(user_id) == role
+        user_role = self._get_user_role(user_id)
+        if user_role == UserRole.ADMIN:
+            return True
+        return user_role == role
         
     def check_user_role_by_token(self, role: UserRole, Authorization: str = Header(None)) -> bool:
         def dependency(token: str = Depends(oauth2_scheme)) -> bool:
