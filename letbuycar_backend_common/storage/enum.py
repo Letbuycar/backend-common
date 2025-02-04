@@ -6,3 +6,4 @@ class DOCS_TYPE(str, Enum):
     CARGO_DOCS = 'cargo_docs'
     USER_DOCS = 'user_docs'
     PAYMENT = 'payment'
+    CONTAINER = 'container'
