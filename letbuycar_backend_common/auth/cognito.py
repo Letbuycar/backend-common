@@ -154,7 +154,7 @@ class AWS_Common_Cognito:
         try:
             resp = self.client.admin_set_user_password(
                 UserPoolId=os.getenv('AWS_COGNITO_USER_POOL_ID'),
-                Username=user_id,
+                Username=str(user_id),
                 Password=new_passowrd,
                 Permanent=True
             )
