@@ -148,3 +148,20 @@ class AWS_Common_Cognito:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient role permissions")
             return user
         return dependency
+    
+
+    def change_password(self, new_passowrd: str, user_id: UUID):
+        try:
+            resp = self.client.admin_set_user_password(
+                UserPoolId=os.getenv('AWS_COGNITO_USER_POOL_ID'),
+                Username=user_id,
+                Password=new_passowrd,
+                Permanent=True
+            )
+            return resp
+        except ClientError as e:
+            return {"Error": e.response['Error']['Message']}
+        except BotoCoreError as e:
+            return {"Error": str(e)}
+        except Exception as e:
+            return {"Error": str(e)}
