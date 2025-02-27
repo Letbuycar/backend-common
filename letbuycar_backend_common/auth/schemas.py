@@ -10,6 +10,7 @@ class UserRole(str, Enum):
     DEALER = 'Dealer'
     LOGISTICIAN = 'Logistician'
     BROKER = 'Broker'
+    EXPEDITOR = 'Expeditor'
     CUSTOMER = 'Customer'
     ROBOT = 'Robot'
 
