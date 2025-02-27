@@ -7,3 +7,4 @@ class DOCS_TYPE(str, Enum):
     USER_DOCS = 'user_docs'
     PAYMENT = 'payment'
     CONTAINER = 'container'
+    PORT_IMAGES = 'port-images'
