@@ -8,3 +8,5 @@ class DOCS_TYPE(str, Enum):
     PAYMENT = 'payment'
     CONTAINER = 'container'
     PORT_IMAGES = 'port-images'
+    CERTIFICATE = 'certificate'
+    DELIVERY = 'delivery'
