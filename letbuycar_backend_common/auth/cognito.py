@@ -1,7 +1,8 @@
 import boto3
 import os
 from uuid import UUID
-from fastapi import Depends, HTTPException, status, Header
+from typing import Optional
+from fastapi import Depends, HTTPException, status, Header, Request
 from fastapi.security import OAuth2PasswordBearer
 from botocore.exceptions import ClientError, BotoCoreError
 from .schemas import UserRole
@@ -100,13 +101,22 @@ class AWS_Common_Cognito:
         if user_role == UserRole.ADMIN:
             return True
         return user_role == role
-        
-    def get_user_info_by_token(self, Authorization: str = Header(None)) -> bool:
-        def dependency(token: str = Depends(oauth2_scheme)) -> bool:
-            user = self.get_user(token)
-            return user
-        return dependency
     
+
+    def get_user_info_by_token(self):
+        def dependency(request: Request) -> Optional[dict]:
+            auth_header = request.headers.get("Authorization")
+            if not auth_header:
+                return None
+            try:
+                token = auth_header.replace("Bearer ", "")
+                user = self.get_user(token)
+                return user
+            except Exception:
+                return None
+        return dependency
+
+
 
     def check_user_role_by_token(self, role: UserRole, Authorization: str = Header(None)) -> bool:
         def dependency(token: str = Depends(oauth2_scheme)) -> bool:
